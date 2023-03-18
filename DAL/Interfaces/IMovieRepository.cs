@@ -7,5 +7,7 @@ namespace CodeChallenge.DAL.Interfaces
     {
         Task<IEnumerable<Movie_DTO>> GetMoviesAll();
         Task<Movie_DTO> GetMovieById(Guid movieId);
+        Task<IEnumerable<Movie_DTO>> GetMoviesByDirectorId(Guid directorId);
+        Task<IEnumerable<Movie_DTO>> GetMoviesByDirectorName(string directorName);
     }
 }
