@@ -16,7 +16,5 @@ namespace RWE.App.Core.Dto
         public string Name { get; set; }
         [JsonPropertyName("birthdate")]
         public DateTime Birthdate { get; set; }
-        [JsonPropertyName("movie")]
-        public virtual Movie Movie { get; set; }
     }
 }

@@ -12,6 +12,8 @@ namespace RWE.App.Core.Interfaces
     {
         Task<IEnumerable<Director_DTO>> GetDirectorsAll();
         Task<Director_DTO> GetDirectorById(Guid directorId);
-        Task<IEnumerable<Director_DTO>> GetDirectorByName(string directorName);
+        Task<Director_DTO> CreateDirector(Director_DTO dto);
+        Task<Director_DTO> UpdateDirector(Director_DTO dto);
+        Task<Guid> DeleteDirector(Guid directorId);
     }
 }

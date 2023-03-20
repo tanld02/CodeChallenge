@@ -18,26 +18,31 @@ public class MovieRepository : GenericRepository<Movie>, IMovieRepository
     public async Task<IEnumerable<Movie_DTO>> GetMoviesAll()
     {
         return await _context.Movies
+            .AsNoTracking()
+            .Include(m => m.Uu)
             .Select(c => new Movie_DTO()
             {
                 Uuid = c.Uuid,
                 Title = c.Title,
                 ReleaseDate = c.ReleaseDate,
-                Rating = c.Rating
+                Rating = c.Rating,
+                DirectorId = c.DirectorUuid
             })
             .ToListAsync();
     }
 
     public async Task<Movie_DTO> GetMovieById(Guid movieId)
     {
-        return await _context.Movies
+        return await _context.Movies.
+            AsNoTracking()
             .Where(c => c.Uuid == movieId)?
             .Select(c => new Movie_DTO()
             {
                 Uuid = c.Uuid,
                 Title = c.Title,
                 ReleaseDate = c.ReleaseDate,
-                Rating = c.Rating
+                Rating = c.Rating,
+                DirectorId = c.DirectorUuid
             })?
             .FirstOrDefaultAsync();
     }
@@ -51,7 +56,8 @@ public class MovieRepository : GenericRepository<Movie>, IMovieRepository
                 Uuid = c.Uuid,
                 Title = c.Title,
                 ReleaseDate = c.ReleaseDate,
-                Rating = c.Rating
+                Rating = c.Rating,
+                DirectorId = c.DirectorUuid
             })
             .ToListAsync();
     }
@@ -66,33 +72,45 @@ public class MovieRepository : GenericRepository<Movie>, IMovieRepository
                           Uuid = movie.Uuid,
                           Title = movie.Title,
                           ReleaseDate = movie.ReleaseDate,
-                          Rating = movie.Rating
+                          Rating = movie.Rating,
+                          DirectorId= movie.DirectorUuid
                       })
          .ToListAsync();
     }
 
     public async Task<Movie_DTO> UpdateMovie(Movie_DTO data)
     {
-        var movie = await _context.Movies.AsNoTracking().FirstOrDefaultAsync(item => item.Uuid == data.Uuid);
-        if(movie == null)
-        {
-            return null;
-        }
-        _context.Movies.Update(new Movie()
+
+        var result = _context.Movies.Update(new Movie()
         {
             Rating = data.Rating,
             ReleaseDate = data.ReleaseDate,
             Title = data.Title,
-            Uu = movie.Uu,
-            DirectorUuid = movie.DirectorUuid,
-            Uuid = movie.Uuid
+            DirectorUuid = data.DirectorId,
+            Uuid = data.Uuid
         });
-        return data;
+
+        if (result != null)
+        {
+            return data;
+        }
+        else
+        {
+            throw new Exception();
+        }
     }
 
     public async Task<Guid> DeleteMovie(Guid movieId)
     {
         var result = await Task.FromResult(_context.Movies.Remove(new Movie() { Uuid = movieId }));
-        return result.Entity.Uuid;
+
+        if (result != null)
+        {
+            return result.Entity.Uuid;
+        }
+        else
+        {
+            throw new NullReferenceException();
+        };
     }
 }

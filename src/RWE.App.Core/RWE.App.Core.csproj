@@ -9,15 +9,27 @@
   <ItemGroup>
     <Compile Remove="Common\**" />
     <Compile Remove="DAL\**" />
+    <Compile Remove="Interfaces\IDirector\**" />
+    <Compile Remove="Interfaces\Movie\**" />
     <Compile Remove="Models\**" />
+    <Compile Remove="Services\Director\**" />
+    <Compile Remove="Services\Movie\**" />
     <Compile Remove="Services\Registrations\**" />
     <EmbeddedResource Remove="Common\**" />
     <EmbeddedResource Remove="DAL\**" />
+    <EmbeddedResource Remove="Interfaces\IDirector\**" />
+    <EmbeddedResource Remove="Interfaces\Movie\**" />
     <EmbeddedResource Remove="Models\**" />
+    <EmbeddedResource Remove="Services\Director\**" />
+    <EmbeddedResource Remove="Services\Movie\**" />
     <EmbeddedResource Remove="Services\Registrations\**" />
     <None Remove="Common\**" />
     <None Remove="DAL\**" />
+    <None Remove="Interfaces\IDirector\**" />
+    <None Remove="Interfaces\Movie\**" />
     <None Remove="Models\**" />
+    <None Remove="Services\Director\**" />
+    <None Remove="Services\Movie\**" />
     <None Remove="Services\Registrations\**" />
   </ItemGroup>
 
@@ -28,10 +40,6 @@
   <ItemGroup>
     <PackageReference Include="Microsoft.EntityFrameworkCore" Version="7.0.4" />
     <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="7.0.0" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="Services\" />
   </ItemGroup>
 
 </Project>

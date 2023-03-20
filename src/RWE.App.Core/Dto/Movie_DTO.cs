@@ -1,5 +1,4 @@
-﻿using RWE.App.Core.Common;
-using System.Text.Json.Serialization;
+﻿using System.Text.Json.Serialization;
 
 namespace RWE.App.Core.Dto;
 
@@ -17,4 +16,7 @@ public class Movie_DTO
 
     [JsonPropertyName("rating")]
     public short? Rating { get; set; }
+
+    [JsonPropertyName("directorId")]
+    public Guid DirectorId { get; set; }
 }

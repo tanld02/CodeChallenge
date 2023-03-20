@@ -7,3 +7,4 @@
 /src/RWE.App.Core/bin
 /src/RWE.App.Infrastructure/bin
 /src/RWE.App.Infrastructure/obj
+/src/RWE.App.Api/*.user
