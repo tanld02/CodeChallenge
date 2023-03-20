@@ -1,6 +1,6 @@
 # Backend Developer Code Challenge
 
-This is a code challenge, which is intended to give RWE Solution Engineers a clear picture as to how you solve problems.
+This is a code challenge, which is intended to give Solution Engineers a clear picture as to how you solve problems.
 
 The tasks outlined in the code challenge are written in a style similar to User Stories, which may be found in a project.
 
