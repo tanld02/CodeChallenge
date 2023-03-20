@@ -121,7 +121,8 @@ public class MovieRepository : GenericRepository<Movie>, IMovieRepository
             Rating = data.Rating,
             ReleaseDate = data.ReleaseDate,
             Title = data.Title,
-            DirectorUuid = data.DirectorId
+            DirectorUuid = data.DirectorId,
+            Uuid = Guid.NewGuid()
         }));
 
         if (result != null)
