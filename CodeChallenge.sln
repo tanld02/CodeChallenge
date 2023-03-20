@@ -3,21 +3,21 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.1.32414.318
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RWE.App.Infrastructure", "src\RWE.App.Infrastructure\RWE.App.Infrastructure.csproj", "{9FA15957-0D2D-4357-96C0-2C4ABFB6E349}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CodeChallenge.App.Infrastructure", "src\CodeChallenge.App.Infrastructure\CodeChallenge.App.Infrastructure.csproj", "{9FA15957-0D2D-4357-96C0-2C4ABFB6E349}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RWE.App.Api", "src\RWE.App.Api\RWE.App.Api.csproj", "{312B94E6-871E-4EF6-9B41-A95B1C325D4E}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CodeChallenge.App.Api", "src\CodeChallenge.App.Api\CodeChallenge.App.Api.csproj", "{312B94E6-871E-4EF6-9B41-A95B1C325D4E}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RWE.App.Core", "src\RWE.App.Core\RWE.App.Core.csproj", "{A67F72C1-A655-4F0C-AF54-FA1E4C02D772}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CodeChallenge.App.Core", "src\CodeChallenge.App.Core\CodeChallenge.App.Core.csproj", "{A67F72C1-A655-4F0C-AF54-FA1E4C02D772}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{260292FA-6D47-414F-9B6E-C43C10ADD15B}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "test", "test", "{B34BB3FD-DC8C-428C-96AB-88A73C4B1C0A}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RWE.App.ApiTest", "test\RWE.App.ApiTest\RWE.App.ApiTest.csproj", "{ED269A68-2F8A-4AAB-B286-4EB26A3DAF35}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CodeChallenge.App.ApiTest", "test\CodeChallenge.App.ApiTest\CodeChallenge.App.ApiTest.csproj", "{ED269A68-2F8A-4AAB-B286-4EB26A3DAF35}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RWE.App.CoreTest", "test\RWE.App.CoreTest\RWE.App.CoreTest.csproj", "{1B607DC8-8036-42B9-8F8F-35C6E023D0C2}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CodeChallenge.App.CoreTest", "test\CodeChallenge.App.CoreTest\CodeChallenge.App.CoreTest.csproj", "{1B607DC8-8036-42B9-8F8F-35C6E023D0C2}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RWE.App.InfrastructureTest", "test\RWE.App.InfrastructureTest\RWE.App.InfrastructureTest.csproj", "{B1558BB2-6915-405C-8FEB-149141301139}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CodeChallenge.App.InfrastructureTest", "test\CodeChallenge.App.InfrastructureTest\CodeChallenge.App.InfrastructureTest.csproj", "{B1558BB2-6915-405C-8FEB-149141301139}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
