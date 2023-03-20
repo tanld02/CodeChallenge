@@ -3,6 +3,8 @@ using RWE.App.Api.Models;
 using Microsoft.EntityFrameworkCore;
 using RWE.App.Core;
 using RWE.App.Infrastructure;
+using MediatR;
+using System.Reflection;
 
 namespace RWE.App.Api;
 
@@ -21,6 +23,9 @@ public class Startup
     public void ConfigureServices(IServiceCollection services)
     {
         services.Configure<AppSettings>(Configuration);
+
+        //services.AddMediatR(Assembly.GetExecutingAssembly());
+        services.AddMediatR(AppDomain.CurrentDomain.GetAssemblies());
         // Add Dependency Core Layer
         services.AddCoreServices();
         // Add Dependency Infrastructure Layer

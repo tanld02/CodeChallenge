@@ -113,4 +113,24 @@ public class MovieRepository : GenericRepository<Movie>, IMovieRepository
             throw new NullReferenceException();
         };
     }
+
+    public async Task<Movie_DTO> CreateMovie(Movie_DTO data)
+    {
+        var result = await Task.FromResult(_context.Movies.Add(new Movie()
+        {
+            Rating = data.Rating,
+            ReleaseDate = data.ReleaseDate,
+            Title = data.Title,
+            DirectorUuid = data.DirectorId
+        }));
+
+        if (result != null)
+        {
+            return data;
+        }
+        else
+        {
+            throw new Exception();
+        }
+    }
 }

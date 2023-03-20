@@ -1,6 +1,9 @@
 using RWE.App.Core.Dto;
 using Microsoft.AspNetCore.Mvc;
 using RWE.App.Core.Interfaces;
+using MediatR;
+using RWE.App.Core.Queries.Movies;
+using RWE.App.Core.Commands.Movies;
 
 namespace RWE.App.Api.Controllers
 {
@@ -9,14 +12,14 @@ namespace RWE.App.Api.Controllers
     public class MoviesController : ControllerBase
     {
         private readonly ILogger<MoviesController> _logger;
-        private readonly IUnitOfWork _unitOfWork;
+        private IMediator _mediator;
 
         public MoviesController(
             ILogger<MoviesController> logger,
-            IUnitOfWork unitOfWork)
+            IMediator mediator)
         {
             _logger = logger;
-            _unitOfWork = unitOfWork;
+            _mediator = mediator;
         }
 
         [HttpGet()]
@@ -24,7 +27,7 @@ namespace RWE.App.Api.Controllers
         {
             try
             {
-                var result = await _unitOfWork.MovieRepository.GetMoviesAll().ConfigureAwait(false);
+                var result = await _mediator.Send(new GetMoviesAllQuery()).ConfigureAwait(false);
                 if(result == null)
                 {
                     return NoContent();
@@ -45,7 +48,7 @@ namespace RWE.App.Api.Controllers
         {
             try
             {
-                var result = await _unitOfWork.MovieRepository.GetMovieById(movieId).ConfigureAwait(false);
+                var result = await _mediator.Send(new GetMovieByIdQuery() { Id = movieId}).ConfigureAwait(false);
 
                 if (result == null)
                 {
@@ -66,7 +69,7 @@ namespace RWE.App.Api.Controllers
         {
             try
             {
-                var result = await _unitOfWork.MovieRepository.GetMoviesByDirectorId(directorId).ConfigureAwait(false);
+                var result = await _mediator.Send(new GetMoviesByDirectorIdQuery() { DirectorId = directorId }).ConfigureAwait(false);
 
                 if (result == null)
                 {
@@ -87,7 +90,7 @@ namespace RWE.App.Api.Controllers
         {
             try
             {
-                var result = await _unitOfWork.MovieRepository.GetMoviesByDirectorName(directorName).ConfigureAwait(false);
+                var result = await _mediator.Send(new GetMoviesByDirectorNameQuery() { DirectorName = directorName }).ConfigureAwait(false);
 
                 if (result == null)
                 {
@@ -106,13 +109,22 @@ namespace RWE.App.Api.Controllers
         {
             try
             {
-                var result = await _unitOfWork.MovieRepository.UpdateMovie(data).ConfigureAwait(false);
+                var result = await _mediator.Send(new UpdateMovieCommand() {Dto = data }).ConfigureAwait(false);
+                return Ok(result);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError($"Message: {ex.Message} \n StackTrace: {ex.StackTrace}");
+                return StatusCode(500, ex.Message);
+            }
+        }
 
-                if (result == null)
-                {
-                    return NotFound();
-                }
-                await _unitOfWork.SaveChangeAsync().ConfigureAwait(false);
+        [HttpPost]
+        public async Task<IActionResult> Create([FromBody] Movie_DTO data)
+        {
+            try
+            {
+                var result = await _mediator.Send(new CreateMovieCommand() { Dto = data }).ConfigureAwait(false);
                 return Ok(result);
             }
             catch (Exception ex)
@@ -127,12 +139,7 @@ namespace RWE.App.Api.Controllers
         {
             try
             {
-                var result = await _unitOfWork.MovieRepository.DeleteMovie(movieId).ConfigureAwait(false);
-                if (result == Guid.Empty)
-                {
-                    return NotFound();
-                }
-                await _unitOfWork.SaveChangeAsync().ConfigureAwait(false);
+                var result = await _mediator.Send(new DeleteMovieCommand() { Id = movieId }).ConfigureAwait(false);
                 return Ok(result);
             }
             catch (Exception ex)

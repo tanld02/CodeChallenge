@@ -1,6 +1,9 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using MediatR;
+using Microsoft.AspNetCore.Mvc;
+using RWE.App.Core.Commands.Directors;
 using RWE.App.Core.Dto;
 using RWE.App.Core.Interfaces;
+using RWE.App.Core.Queries.Directors;
 
 namespace RWE.App.Api.Controllers
 {
@@ -9,14 +12,14 @@ namespace RWE.App.Api.Controllers
     public class DirectorsController :  ControllerBase
     {
         private readonly ILogger<DirectorsController> _logger;
-        private readonly IUnitOfWork _unitOfWork;
+        private IMediator _mediator;
 
         public DirectorsController(
             ILogger<DirectorsController> logger,
-            IUnitOfWork unitOfWork)
+            IMediator mediator)
         {
             _logger = logger;
-            _unitOfWork = unitOfWork;
+            _mediator = mediator;
         }
 
         [HttpGet()]
@@ -24,7 +27,7 @@ namespace RWE.App.Api.Controllers
         {
             try
             {
-                var result = await _unitOfWork.DirectorRepository.GetDirectorsAll().ConfigureAwait(false);
+                var result = await _mediator.Send(new GetDirectorsAllQuery()).ConfigureAwait(false);
                 if(result == null)
                 {
                     return NoContent();
@@ -47,7 +50,7 @@ namespace RWE.App.Api.Controllers
                 {
                     return BadRequest();
                 }
-                var result = await _unitOfWork.DirectorRepository.GetDirectorById(directorId).ConfigureAwait(false);
+                var result = await _mediator.Send(new GetDirectorByIdQuery() { Id = directorId}).ConfigureAwait(false);
 
                 if (result == null)
                 {
@@ -71,13 +74,7 @@ namespace RWE.App.Api.Controllers
                 {
                     return BadRequest();
                 }
-
-                var result = await _unitOfWork.DirectorRepository.CreateDirector(director).ConfigureAwait(false);
-                if (result == null)
-                {
-                    return StatusCode(500);
-                }
-                await _unitOfWork.SaveChangeAsync().ConfigureAwait(false);
+                var result = await _mediator.Send(new CreateDirectorCommand() { Dto = director }).ConfigureAwait(false);
                 return Ok(result);
             }
             catch (Exception ex)
@@ -97,13 +94,7 @@ namespace RWE.App.Api.Controllers
                     return BadRequest();
                 }
 
-                var result = await _unitOfWork.DirectorRepository.UpdateDirector(director).ConfigureAwait(false);
-
-                if (result == null)
-                {
-                    return NotFound();
-                }
-                await _unitOfWork.SaveChangeAsync().ConfigureAwait(false);
+                var result = await _mediator.Send(new UpdateDirectorCommand() { Dto = director }).ConfigureAwait(false);
                 return Ok(result);
             }
             catch (Exception ex)
@@ -118,8 +109,7 @@ namespace RWE.App.Api.Controllers
         {
             try
             {
-                var result = await _unitOfWork.DirectorRepository.DeleteDirector(directorId).ConfigureAwait(false);
-                await _unitOfWork.SaveChangeAsync().ConfigureAwait(false);
+                var result = await _mediator.Send(new DeleteDirectorCommand() { Id = directorId }).ConfigureAwait(false);
                 return Ok(result);
             }
             catch (Exception ex)
