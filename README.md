@@ -1,4 +1,4 @@
-﻿# Backend Developer Code Challenge
+# Backend Developer Code Challenge
 
 This is a code challenge, which is intended to give RWE Solution Engineers a clear picture as to how you solve problems.
 
@@ -48,3 +48,14 @@ As a user, I would like the ability to create, retrieve, update and delete Direc
 	j. (bonus) create a movie
 3. Controllers and controller units of work pre-process inputs if applicable
 4. Database units of work interface with MSSQL database using Entity Framework to create, retrieve, store or remove data
+
+
+# Solutions applied
+- #### Clean Architecture Pattern
+![image](https://user-images.githubusercontent.com/16662798/226366167-f0d1d636-b7a9-4cb7-b7d5-369b2ef5cee3.png)
+
+- #### CQRS & Mediator
+- #### UnitOfWork
+- #### xUnit
+- ####  Moq 
+
