@@ -63,5 +63,29 @@ namespace RWE.App.Api.Controllers
             }
             return Ok(result);
         }
+        [HttpPut]
+        public async Task<IActionResult> Update([FromBody] Movie_DTO data)
+        {
+            var result = await _unitOfWork.MovieRepository.UpdateMovie(data).ConfigureAwait(false);
+
+            if (result == null)
+            {
+                return NotFound();
+            }
+            await _unitOfWork.SaveChangeAsync().ConfigureAwait(false);
+            return Ok(result);
+        }
+
+        [HttpDelete]
+        public async Task<IActionResult> Delete(Guid movieId)
+        {
+            var result = await _unitOfWork.MovieRepository.DeleteMovie(movieId).ConfigureAwait(false);
+            if(result == Guid.Empty)
+            {
+                return NotFound();
+            }
+            await _unitOfWork.SaveChangeAsync().ConfigureAwait(false);
+            return Ok(result);
+        }
     }
 }

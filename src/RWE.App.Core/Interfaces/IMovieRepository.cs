@@ -9,5 +9,7 @@ namespace RWE.App.Core.Interfaces
         Task<Movie_DTO> GetMovieById(Guid movieId);
         Task<IEnumerable<Movie_DTO>> GetMoviesByDirectorId(Guid directorId);
         Task<IEnumerable<Movie_DTO>> GetMoviesByDirectorName(string directorName);
+        Task<Movie_DTO> UpdateMovie(Movie_DTO data);
+        Task<Guid> DeleteMovie(Guid movieId);
     }
 }

@@ -70,4 +70,29 @@ public class MovieRepository : GenericRepository<Movie>, IMovieRepository
                       })
          .ToListAsync();
     }
+
+    public async Task<Movie_DTO> UpdateMovie(Movie_DTO data)
+    {
+        var movie = await _context.Movies.AsNoTracking().FirstOrDefaultAsync(item => item.Uuid == data.Uuid);
+        if(movie == null)
+        {
+            return null;
+        }
+        _context.Movies.Update(new Movie()
+        {
+            Rating = data.Rating,
+            ReleaseDate = data.ReleaseDate,
+            Title = data.Title,
+            Uu = movie.Uu,
+            DirectorUuid = movie.DirectorUuid,
+            Uuid = movie.Uuid
+        });
+        return data;
+    }
+
+    public async Task<Guid> DeleteMovie(Guid movieId)
+    {
+        var result = await Task.FromResult(_context.Movies.Remove(new Movie() { Uuid = movieId }));
+        return result.Entity.Uuid;
+    }
 }
