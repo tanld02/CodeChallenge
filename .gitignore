@@ -8,3 +8,11 @@
 /src/RWE.App.Infrastructure/bin
 /src/RWE.App.Infrastructure/obj
 /src/RWE.App.Api/*.user
+/RWE.App.ApiTest/obj
+/RWE.App.ApiTest/bin
+/test/RWE.App.ApiTest/obj
+/test/RWE.App.ApiTest/bin
+/test/RWE.App.CoreTest/obj
+/test/RWE.App.CoreTest/bin
+/test/RWE.App.InfrastructureTest/bin
+/test/RWE.App.InfrastructureTest/obj
