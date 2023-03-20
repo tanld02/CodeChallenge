@@ -1,3 +1,9 @@
 /bin
 /obj
 /.vs
+/src/RWE.App.Api/bin
+/src/RWE.App.Api/obj
+/src/RWE.App.Core/obj
+/src/RWE.App.Core/bin
+/src/RWE.App.Infrastructure/bin
+/src/RWE.App.Infrastructure/obj
