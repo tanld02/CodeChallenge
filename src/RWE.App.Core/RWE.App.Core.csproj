@@ -7,12 +7,15 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Common\**" />
     <Compile Remove="DAL\**" />
     <Compile Remove="Models\**" />
     <Compile Remove="Services\Registrations\**" />
+    <EmbeddedResource Remove="Common\**" />
     <EmbeddedResource Remove="DAL\**" />
     <EmbeddedResource Remove="Models\**" />
     <EmbeddedResource Remove="Services\Registrations\**" />
+    <None Remove="Common\**" />
     <None Remove="DAL\**" />
     <None Remove="Models\**" />
     <None Remove="Services\Registrations\**" />

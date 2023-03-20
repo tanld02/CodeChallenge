@@ -1,7 +1,9 @@
-﻿using System.Text.Json.Serialization;
+﻿using RWE.App.Core.Common;
+using System.Text.Json.Serialization;
 
 namespace RWE.App.Core.Dto;
 
+[Serializable]
 public class Movie_DTO
 {
     [JsonPropertyName("uuid")]
