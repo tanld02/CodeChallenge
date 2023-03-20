@@ -13,6 +13,9 @@ using System.Threading.Tasks;
 using Xunit;
 using FluentAssertions;
 using RWE.App.Core.Dto;
+using MediatR;
+using RWE.App.Core.Queries.Directors;
+using System.Threading;
 
 namespace RWE.App.ApiTest
 {
@@ -24,24 +27,20 @@ namespace RWE.App.ApiTest
         private Mock<IMovieRepository> _movieRepository;
         private Mock<IDirectorRepository> _directorRepository;
         private Mock<IDbContext> _dbContext;
+        private Mock<IMediator> _mediatorMock;
         public DirectorControllerTest()
         {
             _logger = new Mock<ILogger<DirectorsController>>();
+            _mediatorMock = new Mock<IMediator>();
         }
 
         [Fact]
         public async Task GetAllDirectors_ReturnListDirectorsData_WhenServerRespondsSuccessfully()
         {
             // Arrange
-            _movieRepository = new Mock<IMovieRepository>();
-            _directorRepository = new Mock<IDirectorRepository>();
-            _dbContext = new Mock<IDbContext>();
-            _unitOfWork = new UnitOfWork(_movieRepository.Object, _directorRepository.Object, _dbContext.Object);
-
-            _directorRepository.Setup(x => x.GetDirectorsAll())
+            _mediatorMock.Setup(x => x.Send(It.IsAny<GetDirectorsAllQuery>(), default(CancellationToken)))
                 .ReturnsAsync(DirectorMockData.MockListDirectorsData());
-            _dbContext.Setup(db => db.SaveAsync()).Verifiable();
-            _directorController = new DirectorsController(_logger.Object, _unitOfWork);
+            _directorController = new DirectorsController(_logger.Object, _mediatorMock.Object);
 
             // Act
             var result = await _directorController.GetDirectorsAll().ConfigureAwait(false);

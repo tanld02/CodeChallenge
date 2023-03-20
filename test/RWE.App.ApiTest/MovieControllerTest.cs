@@ -1,3 +1,4 @@
+using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using Moq;
@@ -5,8 +6,10 @@ using RWE.App.Api.Controllers;
 using RWE.App.ApiTest.Mock;
 using RWE.App.Core.Dto;
 using RWE.App.Core.Interfaces;
+using RWE.App.Core.Queries.Movies;
 using RWE.App.Infrastructure.UnitsOfWork;
 using System.Collections.Generic;
+using System.Threading;
 using System.Threading.Tasks;
 using Xunit;
 
@@ -16,13 +19,11 @@ namespace RWE.App.ApiTest
     {
         private MoviesController _moviesController;
         private Mock<ILogger<MoviesController>> _logger;
-        private IUnitOfWork _unitOfWork;
-        private Mock<IMovieRepository> _movieRepository;
-        private Mock<IDirectorRepository> _directorRepository;
-        private Mock<IDbContext> _dbContext;
+        private Mock<IMediator> _mediatorMock;
         public MovieControllerTest()
         {
             _logger = new Mock<ILogger<MoviesController>>();
+            _mediatorMock = new Mock<IMediator>();
         }
 
 
@@ -30,15 +31,9 @@ namespace RWE.App.ApiTest
         public async Task GetAllMovies_ReturnListMoviesData_WhenServerRespondsSuccessfully()
         {
             // Arrange
-            _movieRepository = new Mock<IMovieRepository>();
-            _directorRepository = new Mock<IDirectorRepository>();
-            _dbContext = new Mock<IDbContext>();
-            _unitOfWork = new UnitOfWork(_movieRepository.Object, _directorRepository.Object, _dbContext.Object);
-
-            _movieRepository.Setup(x => x.GetMoviesAll())
+            _mediatorMock.Setup(x => x.Send(It.IsAny<GetMoviesAllQuery>(), default(CancellationToken)))
                 .ReturnsAsync(MovieMockData.MockListMoviesData());
-            _dbContext.Setup(db => db.SaveAsync()).Verifiable();
-            _moviesController = new MoviesController(_logger.Object, _unitOfWork);
+            _moviesController = new MoviesController(_logger.Object, _mediatorMock.Object);
 
             // Act
             var result = await _moviesController.GetMoviesAll().ConfigureAwait(false);
