@@ -20,4 +20,8 @@
     </PackageReference>
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\..\src\RWE.App.Core\RWE.App.Core.csproj" />
+  </ItemGroup>
+
 </Project>

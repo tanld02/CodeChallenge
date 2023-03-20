@@ -8,11 +8,11 @@ namespace RWE.App.Api.Controllers
     [Route("[controller]")]
     public class DirectorsController :  ControllerBase
     {
-        private readonly ILogger<MoviesController> _logger;
+        private readonly ILogger<DirectorsController> _logger;
         private readonly IUnitOfWork _unitOfWork;
 
         public DirectorsController(
-            ILogger<MoviesController> logger,
+            ILogger<DirectorsController> logger,
             IUnitOfWork unitOfWork)
         {
             _logger = logger;

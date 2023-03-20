@@ -8,8 +8,8 @@ namespace RWE.App.Core.Interfaces
 {
     public interface IUnitOfWork
     {
-        IMovieRepository MovieRepository { get; }
-        IDirectorRepository DirectorRepository { get; }
+        IMovieRepository MovieRepository { get;}
+        IDirectorRepository DirectorRepository { get;}
         Task SaveChangeAsync();
     }
 }
