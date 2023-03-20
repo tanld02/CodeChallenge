@@ -1,17 +1,17 @@
+﻿using Microsoft.AspNetCore.Mvc;
 using RWE.App.Core.Dto;
-using Microsoft.AspNetCore.Mvc;
 using RWE.App.Core.Interfaces;
 
 namespace RWE.App.Api.Controllers
 {
     [ApiController]
     [Route("[controller]")]
-    public class MoviesController : ControllerBase
+    public class DirectorsController :  ControllerBase
     {
         private readonly ILogger<MoviesController> _logger;
         private readonly IUnitOfWork _unitOfWork;
 
-        public MoviesController(
+        public DirectorsController(
             ILogger<MoviesController> logger,
             IUnitOfWork unitOfWork)
         {
@@ -20,16 +20,15 @@ namespace RWE.App.Api.Controllers
         }
 
         [HttpGet()]
-        public async Task<IActionResult> GetMoviesAll()
+        public async Task<IActionResult> GetDirectorsAll()
         {
             try
             {
-                var result = await _unitOfWork.MovieRepository.GetMoviesAll().ConfigureAwait(false);
+                var result = await _unitOfWork.DirectorRepository.GetDirectorsAll().ConfigureAwait(false);
                 if(result == null)
                 {
                     return NoContent();
                 }    
-
                 return Ok(result);
             }
             catch (Exception ex)
@@ -37,15 +36,18 @@ namespace RWE.App.Api.Controllers
                 _logger.LogError($"Message: {ex.Message} \n StackTrace: {ex.StackTrace}");
                 return StatusCode(500, ex.Message);
             }
-
         }
 
-        [HttpGet("{movieId}")]
-        public async Task<IActionResult> GetMovieById(Guid movieId)
+        [HttpGet("{directorId}")]
+        public async Task<IActionResult> GetDirectorById(Guid directorId)
         {
             try
             {
-                var result = await _unitOfWork.MovieRepository.GetMovieById(movieId).ConfigureAwait(false);
+                if (directorId == Guid.Empty)
+                {
+                    return BadRequest();
+                }
+                var result = await _unitOfWork.DirectorRepository.GetDirectorById(directorId).ConfigureAwait(false);
 
                 if (result == null)
                 {
@@ -53,46 +55,29 @@ namespace RWE.App.Api.Controllers
                 }
                 return Ok(result);
             }
-            catch (Exception ex)
+            catch(Exception ex)
             {
                 _logger.LogError($"Message: {ex.Message} \n StackTrace: {ex.StackTrace}");
                 return StatusCode(500, ex.Message);
             }
         }
 
-
-        [HttpGet("GetMovieByDirector/{directorId}")]
-        public async Task<IActionResult> GetMovieByDirector(Guid directorId)
+        [HttpPost]
+        public async Task<IActionResult> CreateDirector(Director_DTO director)
         {
             try
             {
-                var result = await _unitOfWork.MovieRepository.GetMoviesByDirectorId(directorId).ConfigureAwait(false);
+                if(!ModelState.IsValid)
+                {
+                    return BadRequest();
+                }
 
+                var result = await _unitOfWork.DirectorRepository.CreateDirector(director).ConfigureAwait(false);
                 if (result == null)
                 {
-                    return NotFound();
+                    return StatusCode(500);
                 }
-                return Ok(result);
-            }
-            catch (Exception ex)
-            {
-                _logger.LogError($"Message: {ex.Message} \n StackTrace: {ex.StackTrace}");
-                return StatusCode(500, ex.Message);
-            }
-
-        }
-
-        [HttpGet("GetMovieByDirectorName/{directorName}")]
-        public async Task<IActionResult> GetMovieByDirectorName(string directorName)
-        {
-            try
-            {
-                var result = await _unitOfWork.MovieRepository.GetMoviesByDirectorName(directorName).ConfigureAwait(false);
-
-                if (result == null)
-                {
-                    return NotFound();
-                }
+                await _unitOfWork.SaveChangeAsync().ConfigureAwait(false);
                 return Ok(result);
             }
             catch (Exception ex)
@@ -101,12 +86,18 @@ namespace RWE.App.Api.Controllers
                 return StatusCode(500, ex.Message);
             }
         }
+
         [HttpPut]
-        public async Task<IActionResult> Update([FromBody] Movie_DTO data)
+        public async Task<IActionResult> UpdateDirector(Director_DTO director)
         {
             try
             {
-                var result = await _unitOfWork.MovieRepository.UpdateMovie(data).ConfigureAwait(false);
+                if (!ModelState.IsValid)
+                {
+                    return BadRequest();
+                }
+
+                var result = await _unitOfWork.DirectorRepository.UpdateDirector(director).ConfigureAwait(false);
 
                 if (result == null)
                 {
@@ -123,15 +114,11 @@ namespace RWE.App.Api.Controllers
         }
 
         [HttpDelete]
-        public async Task<IActionResult> Delete(Guid movieId)
+        public async Task<IActionResult> DeleteDirector(Guid directorId)
         {
             try
             {
-                var result = await _unitOfWork.MovieRepository.DeleteMovie(movieId).ConfigureAwait(false);
-                if (result == Guid.Empty)
-                {
-                    return NotFound();
-                }
+                var result = await _unitOfWork.DirectorRepository.DeleteDirector(directorId).ConfigureAwait(false);
                 await _unitOfWork.SaveChangeAsync().ConfigureAwait(false);
                 return Ok(result);
             }

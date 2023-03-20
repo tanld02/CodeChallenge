@@ -14,19 +14,98 @@ public class DirectorRepository : GenericRepository<Director>, IDirectorReposito
         _context = context;
     }
 
-    public Task<Director_DTO> GetDirectorById(Guid directorId)
+    public async Task<Director_DTO> CreateDirector(Director_DTO dto)
     {
-        throw new NotImplementedException();
+        var result = _context.Directors.Add(new Director()
+        {
+            Uuid = Guid.NewGuid(),
+            Name = dto.Name,
+            Birthdate = dto.Birthdate
+        });
+
+        if(result != null)
+        {
+            dto.Uuid = result.Entity.Uuid;
+            return dto;
+        }  
+        else
+        {
+            throw new Exception();
+        }   
     }
 
-    public Task<IEnumerable<Director_DTO>> GetDirectorByName(string directorName)
+    public async Task<Guid> DeleteDirector(Guid directorId)
     {
-        throw new NotImplementedException();
+        var result = await Task.FromResult(_context.Directors.Remove(new Director() { Uuid = directorId }));
+        if (result != null)
+        {
+            return result.Entity.Uuid;
+        }
+        else
+        {
+            throw new NullReferenceException();
+        };
     }
 
-    public Task<IEnumerable<Director_DTO>> GetDirectorsAll()
+    public async Task<Director_DTO> GetDirectorById(Guid directorId)
     {
-        throw new NotImplementedException();
+        return await _context.Directors.
+            AsNoTracking()
+            .Where(c => c.Uuid == directorId)?
+            .Select(c => new Director_DTO()
+            {
+                Birthdate = c.Birthdate,
+                Name = c.Name,
+                Uuid = c.Uuid
+            })?
+            .FirstOrDefaultAsync();
+    }
+
+    public async Task<IEnumerable<Director_DTO>> GetDirectorsAll()
+    {
+        var result = await _context.Directors
+            .Include(i => i.Movie)
+            .AsNoTracking()
+            .ToListAsync();
+
+        var directorDTOs = new List<Director_DTO>();
+
+        foreach (var director in result ?? new List<Director>())
+        {
+            var directorDTO = new Director_DTO()
+            {
+                Birthdate = director.Birthdate,
+                Name = director.Name,
+                Uuid = director.Uuid
+            };
+
+            directorDTOs.Add(directorDTO);
+        }
+
+        return directorDTOs;
+    }
+
+    public async Task<Director_DTO> UpdateDirector(Director_DTO director)
+    {
+        if (director == null)
+        {
+            return null;
+        }
+
+        var result = _context.Directors.Update(new Director()
+        {
+            Uuid = director.Uuid,
+            Name = director.Name,
+            Birthdate = director.Birthdate
+        });
+        if (result != null)
+        {
+            return director;
+        }
+        else
+        {
+            throw new Exception();
+        };
     }
 }
 

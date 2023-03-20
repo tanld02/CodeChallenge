@@ -53,6 +53,11 @@ public partial class CodeChallengeContext : DbContext, IDbContext
                 .IsRequired()
                 .HasMaxLength(50)
                 .HasColumnName("name");
+
+            //entity.HasOne(d => d.Movie).WithOne(s => s.Uu)
+            //    .HasForeignKey<Movie>(ad => ad.Uuid)
+            //    .OnDelete(DeleteBehavior.ClientSetNull)
+            //    .HasConstraintName("FK_Director_Movie");
         });
 
         modelBuilder.Entity<Movie>(entity =>
@@ -74,8 +79,8 @@ public partial class CodeChallengeContext : DbContext, IDbContext
                 .HasMaxLength(50)
                 .HasColumnName("title");
 
-            entity.HasOne(d => d.Uu).WithOne(p => p.Movie)
-                .HasForeignKey<Movie>(d => d.Uuid)
+            entity.HasOne(d => d.Uu).WithOne(s => s.Movie)
+                .HasForeignKey<Movie>(ad => ad.DirectorUuid)
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK_Movie_Director");
         });
